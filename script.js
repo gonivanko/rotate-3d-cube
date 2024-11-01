@@ -41,23 +41,23 @@ function get_radians(degrees) {
 function axonometric_perspective(figure, theta_x, theta_y) {
     const theta_x1 = get_radians(theta_x);
     const theta_y1 = get_radians(theta_y);
-    const f1 = [
+
+    const x_rotation_matrix = [
         [1, 0, 0, 0],
-        [0, Math.cos(theta_x1), Math.sin(theta_x1), 0],
-        [0, -Math.sin(theta_x1), Math.cos(theta_x1), 0],
+        [0, Math.cos(theta_x1), -Math.sin(theta_x1), 0],
+        [0, Math.sin(theta_x1), Math.cos(theta_x1), 0],
         [0, 0, 0, 1]
     ];
 
-    const figure1 = multiply_matrices(figure, f1);
-    const f2 = [
-        [Math.cos(theta_y1), 0, -Math.sin(theta_y1), 0],
+    const y_rotation_matrix = [
+        [Math.cos(theta_y1), 0, Math.sin(theta_y1), 0],
         [0, 1, 0, 0],
-        [Math.sin(theta_y1), 0, Math.cos(theta_y1), 0],
+        [-Math.sin(theta_y1), 0, Math.cos(theta_y1), 0],
         [0, 0, 0, 1]
     ];
-
-    const figure2 = multiply_matrices(figure1, f2);
-    return figure2
+    let rotated_figure = multiply_matrices(figure, y_rotation_matrix);
+    rotated_figure = multiply_matrices(rotated_figure, x_rotation_matrix);
+    return rotated_figure
 }
 
 function get_initial_cube(edge_length) {
