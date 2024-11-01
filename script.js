@@ -157,10 +157,10 @@ const length = 150;
 const canvas = document.getElementById("canvas");
 
 const form = document.getElementById("move-rotate-form");
-const xMove = document.getElementById("xMove");
-const yMove = document.getElementById("yMove");
-const xRotate = document.getElementById("xRotate");
-const yRotate = document.getElementById("yRotate");
+const xMove = document.getElementById("x-move");
+const yMove = document.getElementById("y-move");
+const xRotate = document.getElementById("x-rotate");
+const yRotate = document.getElementById("y-rotate");
 
 xMove.addEventListener("change", draw);
 yMove.addEventListener("change", draw);
