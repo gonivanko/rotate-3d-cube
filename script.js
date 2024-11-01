@@ -1,18 +1,18 @@
-function multiply_matrices(matrix1, matrix2) {
-    const matrix1_rows = matrix1.length;
-    const matrix1_columns = matrix1[0].length;
-    const matrix2_rows = matrix2.length;
-    const matrix2_columns = matrix2[0].length;
-    let result = Array.from({ length: matrix1_rows }, () => Array(matrix2_columns).fill(0));
+function multiplyMatrices(matrix1, matrix2) {
+    const matrix1Rows = matrix1.length;
+    const matrix1Columns = matrix1[0].length;
+    const matrix2Rows = matrix2.length;
+    const matrix2Columns = matrix2[0].length;
+    let result = Array.from({ length: matrix1Rows }, () => Array(matrix2Columns).fill(0));
 
-    if (matrix1_columns != matrix2_rows) {
+    if (matrix1Columns != matrix2Rows) {
         console.log("Error, can't multiply matrices");
     }
     else {
-        for (let i = 0; i < matrix1_rows; i++) {
-            for (let j = 0; j < matrix2_columns; j++) {
+        for (let i = 0; i < matrix1Rows; i++) {
+            for (let j = 0; j < matrix2Columns; j++) {
                 let sum = 0;
-                for (let k = 0; k < matrix1_columns; k++) {
+                for (let k = 0; k < matrix1Columns; k++) {
                     sum += matrix1[i][k] * matrix2[k][j];
                 }
                 result[i][j] = sum;
@@ -22,59 +22,59 @@ function multiply_matrices(matrix1, matrix2) {
     return result;
 }
 
-function move_cube(figure, l=0, m=0, n=0) {
+function moveCube(figure, l=0, m=0, n=0) {
     const f = [
         [1, 0, 0, 0],
         [0, 1, 0, 0],
         [0, 0, 1, 0],
         [l, m, n, 1]
     ];
-    moved_figure = multiply_matrices(figure, f);
-    return moved_figure
+    movedFigure = multiplyMatrices(figure, f);
+    return movedFigure
 }
 
 
-function get_radians(degrees) {
+function getRadians(degrees) {
     return degrees * Math.PI / 180;
 }
 
-function axonometric_perspective(figure, theta_x, theta_y) {
-    const theta_x1 = get_radians(theta_x);
-    const theta_y1 = get_radians(theta_y);
+function axonometricPerspective(figure, thetaX, thetaY) {
+    const thetaX1 = getRadians(thetaX);
+    const thetaY1 = getRadians(thetaY);
 
-    const x_rotation_matrix = [
+    const xRotationMatrix = [
         [1, 0, 0, 0],
-        [0, Math.cos(theta_x1), -Math.sin(theta_x1), 0],
-        [0, Math.sin(theta_x1), Math.cos(theta_x1), 0],
+        [0, Math.cos(thetaX1), -Math.sin(thetaX1), 0],
+        [0, Math.sin(thetaX1), Math.cos(thetaX1), 0],
         [0, 0, 0, 1]
     ];
 
-    const y_rotation_matrix = [
-        [Math.cos(theta_y1), 0, Math.sin(theta_y1), 0],
+    const yRotationMatrix = [
+        [Math.cos(thetaY1), 0, Math.sin(thetaY1), 0],
         [0, 1, 0, 0],
-        [-Math.sin(theta_y1), 0, Math.cos(theta_y1), 0],
+        [-Math.sin(thetaY1), 0, Math.cos(thetaY1), 0],
         [0, 0, 0, 1]
     ];
-    let rotated_figure = multiply_matrices(figure, y_rotation_matrix);
-    rotated_figure = multiply_matrices(rotated_figure, x_rotation_matrix);
-    return rotated_figure
+    let rotatedFigure = multiplyMatrices(figure, yRotationMatrix);
+    rotatedFigure = multiplyMatrices(rotatedFigure, xRotationMatrix);
+    return rotatedFigure
 }
 
-function get_initial_cube(edge_length) {
+function getInitialCube(edgeLength) {
     let a = [
         [0, 0, 0, 1],
-        [edge_length, 0, 0, 1],
-        [edge_length, edge_length, 0, 1],
-        [0, edge_length, 0, 1],
-        [0, 0, edge_length, 1],
-        [edge_length, 0, edge_length, 1],
-        [edge_length, edge_length, edge_length, 1],
-        [0, edge_length, edge_length, 1]
+        [edgeLength, 0, 0, 1],
+        [edgeLength, edgeLength, 0, 1],
+        [0, edgeLength, 0, 1],
+        [0, 0, edgeLength, 1],
+        [edgeLength, 0, edgeLength, 1],
+        [edgeLength, edgeLength, edgeLength, 1],
+        [0, edgeLength, edgeLength, 1]
     ];
     return a;
 }
 
-function get_cube_center(cube) {
+function getCubeCenter(cube) {
     let x = (cube[0][0] + cube[6][0]) / 2;
     let y = (cube[0][1] + cube[6][1]) / 2;
     let z = (cube[0][2] + cube[6][2]) / 2;
@@ -84,68 +84,68 @@ function get_cube_center(cube) {
 }
 
 function draw() {
-    let cube = get_initial_cube(length);
+    let cube = getInitialCube(length);
 
-    function display_cube(displayed_cube) {
+    function displayCube(displayedCube) {
         if (canvas.getContext) {
             const ctx = canvas.getContext("2d");
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
     
             ctx.beginPath();
-            ctx.moveTo(displayed_cube[0][0], displayed_cube[0][1]);
-            ctx.lineTo(displayed_cube[1][0], displayed_cube[1][1]);
-            ctx.lineTo(displayed_cube[2][0], displayed_cube[2][1]);
-            ctx.lineTo(displayed_cube[3][0], displayed_cube[3][1]);
+            ctx.moveTo(displayedCube[0][0], displayedCube[0][1]);
+            ctx.lineTo(displayedCube[1][0], displayedCube[1][1]);
+            ctx.lineTo(displayedCube[2][0], displayedCube[2][1]);
+            ctx.lineTo(displayedCube[3][0], displayedCube[3][1]);
     
-            ctx.lineTo(displayed_cube[0][0], displayed_cube[0][1]);
-            ctx.lineTo(displayed_cube[4][0], displayed_cube[4][1]);
-            ctx.lineTo(displayed_cube[5][0], displayed_cube[5][1]);
-            ctx.lineTo(displayed_cube[1][0], displayed_cube[1][1]);
+            ctx.lineTo(displayedCube[0][0], displayedCube[0][1]);
+            ctx.lineTo(displayedCube[4][0], displayedCube[4][1]);
+            ctx.lineTo(displayedCube[5][0], displayedCube[5][1]);
+            ctx.lineTo(displayedCube[1][0], displayedCube[1][1]);
     
-            ctx.lineTo(displayed_cube[2][0], displayed_cube[2][1]);
-            ctx.lineTo(displayed_cube[6][0], displayed_cube[6][1]);
-            ctx.lineTo(displayed_cube[7][0], displayed_cube[7][1]);
-            ctx.lineTo(displayed_cube[3][0], displayed_cube[3][1]);
+            ctx.lineTo(displayedCube[2][0], displayedCube[2][1]);
+            ctx.lineTo(displayedCube[6][0], displayedCube[6][1]);
+            ctx.lineTo(displayedCube[7][0], displayedCube[7][1]);
+            ctx.lineTo(displayedCube[3][0], displayedCube[3][1]);
     
-            ctx.lineTo(displayed_cube[2][0], displayed_cube[2][1]);
-            ctx.lineTo(displayed_cube[6][0], displayed_cube[6][1]);
-            ctx.lineTo(displayed_cube[5][0], displayed_cube[5][1]);
-            ctx.lineTo(displayed_cube[4][0], displayed_cube[4][1]);
-            ctx.lineTo(displayed_cube[7][0], displayed_cube[7][1]);
-            ctx.lineTo(displayed_cube[3][0], displayed_cube[3][1]);
-            ctx.lineTo(displayed_cube[0][0], displayed_cube[0][1]);
+            ctx.lineTo(displayedCube[2][0], displayedCube[2][1]);
+            ctx.lineTo(displayedCube[6][0], displayedCube[6][1]);
+            ctx.lineTo(displayedCube[5][0], displayedCube[5][1]);
+            ctx.lineTo(displayedCube[4][0], displayedCube[4][1]);
+            ctx.lineTo(displayedCube[7][0], displayedCube[7][1]);
+            ctx.lineTo(displayedCube[3][0], displayedCube[3][1]);
+            ctx.lineTo(displayedCube[0][0], displayedCube[0][1]);
             ctx.closePath();
             ctx.stroke();
         }
     }
-    let [cubeX, cubeY, cubeZ] = get_cube_center(cube);
+    let [cubeX, cubeY, cubeZ] = getCubeCenter(cube);
     console.log(cubeX, cubeY, cubeZ);
-    cube = move_cube(cube, -cubeX, -cubeY, -cubeZ);
-    cube = axonometric_perspective(cube, parseFloat(x_rotate.value) || 0, parseFloat(y_rotate.value) || 0);
+    cube = moveCube(cube, -cubeX, -cubeY, -cubeZ);
+    cube = axonometricPerspective(cube, parseFloat(xRotate.value) || 0, parseFloat(yRotate.value) || 0);
     
-    cube = move_cube(cube, parseFloat(x_move.value) + cubeX || cubeX, parseFloat(y_move.value) + cubeY || cubeY);
+    cube = moveCube(cube, parseFloat(xMove.value) + cubeX || cubeX, parseFloat(yMove.value) + cubeY || cubeY);
 
     
     console.log(cube);
 
 
-    display_cube(cube);
+    displayCube(cube);
     
 }
 
 function resizeCanvas() {
     const canvas = document.getElementById("canvas");
     canvas.width = window.innerWidth - 40;
-    x_move.max = window.innerWidth - 40 - length;
+    xMove.max = window.innerWidth - 40 - length;
     
     if (window.innerWidth < 555) {
         canvas.height = window.innerHeight - 220;
-        y_move.max = window.innerHeight - 220 - length;
+        yMove.max = window.innerHeight - 220 - length;
     } 
     else {
         canvas.height = window.innerHeight - 120;
-        y_move.max = window.innerHeight - 120 - length;
+        yMove.max = window.innerHeight - 120 - length;
     }  
     
     draw();
@@ -157,14 +157,14 @@ const length = 150;
 const canvas = document.getElementById("canvas");
 
 const form = document.getElementById("move-rotate-form");
-const x_move = document.getElementById("x_move");
-const y_move = document.getElementById("y_move");
-const x_rotate = document.getElementById("x_rotate");
-const y_rotate = document.getElementById("y_rotate");
+const xMove = document.getElementById("xMove");
+const yMove = document.getElementById("yMove");
+const xRotate = document.getElementById("xRotate");
+const yRotate = document.getElementById("yRotate");
 
-x_move.addEventListener("change", draw);
-y_move.addEventListener("change", draw);
-x_rotate.addEventListener("change", draw);
-y_rotate.addEventListener("change", draw);
+xMove.addEventListener("change", draw);
+yMove.addEventListener("change", draw);
+xRotate.addEventListener("change", draw);
+yRotate.addEventListener("change", draw);
 window.addEventListener("load", resizeCanvas);
 
