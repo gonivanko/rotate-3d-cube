@@ -1,3 +1,5 @@
+import { xMove, yMove, xRotate, yRotate, canvas, length } from "./constants.js";
+
 function multiplyMatrices(matrix1, matrix2) {
     const matrix1Rows = matrix1.length;
     const matrix1Columns = matrix1[0].length;
@@ -6,7 +8,7 @@ function multiplyMatrices(matrix1, matrix2) {
     let result = Array.from({ length: matrix1Rows }, () => Array(matrix2Columns).fill(0));
 
     if (matrix1Columns != matrix2Rows) {
-        console.log("Error, can't multiply matrices");
+        // // console.log("Error, can't multiply matrices");
     }
     else {
         for (let i = 0; i < matrix1Rows; i++) {
@@ -22,6 +24,32 @@ function multiplyMatrices(matrix1, matrix2) {
     return result;
 }
 
+function getRadians(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+function getInitialCube(edgeLength) {
+    let a = [
+        [0, 0, 0, 1],
+        [edgeLength, 0, 0, 1],
+        [edgeLength, edgeLength, 0, 1],
+        [0, edgeLength, 0, 1],
+        [0, 0, edgeLength, 1],
+        [edgeLength, 0, edgeLength, 1],
+        [edgeLength, edgeLength, edgeLength, 1],
+        [0, edgeLength, edgeLength, 1]
+    ];
+    return a;
+}
+
+function getCubeCenter(cube) {
+    let x = (cube[0][0] + cube[6][0]) / 2;
+    let y = (cube[0][1] + cube[6][1]) / 2;
+    let z = (cube[0][2] + cube[6][2]) / 2;
+    // // console.log("cube[0][0] = " + cube[0][0]);
+    return [x, y, z];
+}
+
 function moveCube(figure, l=0, m=0, n=0) {
     const f = [
         [1, 0, 0, 0],
@@ -29,13 +57,8 @@ function moveCube(figure, l=0, m=0, n=0) {
         [0, 0, 1, 0],
         [l, m, n, 1]
     ];
-    movedFigure = multiplyMatrices(figure, f);
+    const movedFigure = multiplyMatrices(figure, f);
     return movedFigure
-}
-
-
-function getRadians(degrees) {
-    return degrees * Math.PI / 180;
 }
 
 function axonometricPerspective(figure, thetaX, thetaY) {
@@ -60,30 +83,7 @@ function axonometricPerspective(figure, thetaX, thetaY) {
     return rotatedFigure
 }
 
-function getInitialCube(edgeLength) {
-    let a = [
-        [0, 0, 0, 1],
-        [edgeLength, 0, 0, 1],
-        [edgeLength, edgeLength, 0, 1],
-        [0, edgeLength, 0, 1],
-        [0, 0, edgeLength, 1],
-        [edgeLength, 0, edgeLength, 1],
-        [edgeLength, edgeLength, edgeLength, 1],
-        [0, edgeLength, edgeLength, 1]
-    ];
-    return a;
-}
-
-function getCubeCenter(cube) {
-    let x = (cube[0][0] + cube[6][0]) / 2;
-    let y = (cube[0][1] + cube[6][1]) / 2;
-    let z = (cube[0][2] + cube[6][2]) / 2;
-    console.log("cube[0][0] = " + cube[0][0]);
-    console.log("cube[0][0] = " + cube[0][0]);
-    return [x, y, z];
-}
-
-function draw() {
+export function draw() {
     let cube = getInitialCube(length);
 
     function displayCube(displayedCube) {
@@ -119,52 +119,17 @@ function draw() {
             ctx.stroke();
         }
     }
-    let [cubeX, cubeY, cubeZ] = getCubeCenter(cube);
-    console.log(cubeX, cubeY, cubeZ);
+    const [cubeX, cubeY, cubeZ] = getCubeCenter(cube);
+    // // console.log(cubeX, cubeY, cubeZ);
     cube = moveCube(cube, -cubeX, -cubeY, -cubeZ);
     cube = axonometricPerspective(cube, parseFloat(xRotate.value) || 0, parseFloat(yRotate.value) || 0);
     
     cube = moveCube(cube, parseFloat(xMove.value) + cubeX || cubeX, parseFloat(yMove.value) + cubeY || cubeY);
 
     
-    console.log(cube);
+    // console.log(cube);
 
 
     displayCube(cube);
     
 }
-
-function resizeCanvas() {
-    const canvas = document.getElementById("canvas");
-    canvas.width = window.innerWidth - 40;
-    xMove.max = window.innerWidth - 40 - length;
-    
-    if (window.innerWidth < 555) {
-        canvas.height = window.innerHeight - 220;
-        yMove.max = window.innerHeight - 220 - length;
-    } 
-    else {
-        canvas.height = window.innerHeight - 120;
-        yMove.max = window.innerHeight - 120 - length;
-    }  
-    
-    draw();
-}
-
-
-const length = 150;
-
-const canvas = document.getElementById("canvas");
-
-const form = document.getElementById("move-rotate-form");
-const xMove = document.getElementById("x-move");
-const yMove = document.getElementById("y-move");
-const xRotate = document.getElementById("x-rotate");
-const yRotate = document.getElementById("y-rotate");
-
-xMove.addEventListener("change", draw);
-yMove.addEventListener("change", draw);
-xRotate.addEventListener("change", draw);
-yRotate.addEventListener("change", draw);
-window.addEventListener("load", resizeCanvas);
-
