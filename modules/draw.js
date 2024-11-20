@@ -1,4 +1,4 @@
-import { xMove, yMove, xRotate, yRotate, canvas, length } from "./constants.js";
+import { xMove, yMove, xRotate, yRotate, canvas, sideX, sideY, sideZ} from "./constants.js";
 
 function multiplyMatrices(matrix1, matrix2) {
     const matrix1Rows = matrix1.length;
@@ -28,16 +28,16 @@ function getRadians(degrees) {
     return degrees * Math.PI / 180;
 }
 
-function getInitialCube(edgeLength) {
+function getInitialCube(lengthA=150, lengthB=150, height=150) {
     let a = [
         [0, 0, 0, 1],
-        [edgeLength, 0, 0, 1],
-        [edgeLength, edgeLength, 0, 1],
-        [0, edgeLength, 0, 1],
-        [0, 0, edgeLength, 1],
-        [edgeLength, 0, edgeLength, 1],
-        [edgeLength, edgeLength, edgeLength, 1],
-        [0, edgeLength, edgeLength, 1]
+        [lengthA, 0, 0, 1],
+        [lengthA, lengthB, 0, 1],
+        [0, lengthB, 0, 1],
+        [0, 0, height, 1],
+        [lengthA, 0, height, 1],
+        [lengthA, lengthB, height, 1],
+        [0, lengthB, height, 1]
     ];
     return a;
 }
@@ -46,7 +46,6 @@ function getCubeCenter(cube) {
     let x = (cube[0][0] + cube[6][0]) / 2;
     let y = (cube[0][1] + cube[6][1]) / 2;
     let z = (cube[0][2] + cube[6][2]) / 2;
-    // // console.log("cube[0][0] = " + cube[0][0]);
     return [x, y, z];
 }
 
@@ -84,7 +83,8 @@ function axonometricPerspective(figure, thetaX, thetaY) {
 }
 
 export function draw() {
-    let cube = getInitialCube(length);
+    // let length = sideX.value;
+    let cube = getInitialCube(sideX.value, sideY.value, sideZ.value);
 
     function displayCube(displayedCube) {
         if (canvas.getContext) {

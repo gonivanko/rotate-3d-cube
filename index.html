@@ -8,7 +8,17 @@
   </head>
   <body>
     <canvas id="canvas"></canvas>
-    <form id="move-rotate-form">
+    <form id="settings-form">
+      <label for="side-x">First side length: </label>
+      <input type="number" id="side-x" value="150" name="side-x">
+
+      <label for="side-y">Second side length: </label>
+      <input type="number" id="side-y" value="150" name="side-y">
+
+      <label for="side-z">Height: </label>
+      <input type="number" id="side-z" value="150" name="side-z">
+    </form>
+    <form id="move-rotate-form" style="display: none;">
         <div>
             <label for="x-move">move by x:</label>
             <input type="range" id="x-move" name="x-move" min="0" max="1000" value="0">
@@ -26,8 +36,10 @@
             <label for="y-rotate">rotate around y:</label>
             <input type="range" id="y-rotate" name="y-rotate" min="0" max="360" value="0">
         </div>
-        
+        <!-- <a href="settings.html" class="settings-button">Settings</a> -->
     </form>
+    <div id="message-div"></div>
+    <div id="message-div-2"></div>
     
     <script type="module" src="main.js"></script>
   </body>

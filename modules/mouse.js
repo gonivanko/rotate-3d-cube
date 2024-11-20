@@ -11,7 +11,7 @@ export function handleMouseDown(e) {
     isRotating = true;
 }
 
-function transformDegrees(degrees) {
+export function transformDegrees(degrees) {
     return degrees >= 0 ? degrees % 360 : Math.ceil(-degrees / 360) * 360 + degrees;
 }
 
