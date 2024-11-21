@@ -1,6 +1,5 @@
-// export let length = 150;
-
 export const canvas = document.getElementById("canvas");
+export const figureSelect = document.getElementById("figure-select");
 
 export const xMove = document.getElementById("x-move");
 export const yMove = document.getElementById("y-move");
