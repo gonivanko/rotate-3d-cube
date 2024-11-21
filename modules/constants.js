@@ -8,4 +8,4 @@ export const yRotate = document.getElementById("y-rotate");
 
 export const sideX = document.getElementById("side-x");
 export const sideY = document.getElementById("side-y");
-export const sideZ = document.getElementById("side-z");
+export const height = document.getElementById("height");

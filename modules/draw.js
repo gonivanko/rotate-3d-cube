@@ -1,11 +1,11 @@
-import { xMove, yMove, xRotate, yRotate, canvas, sideX, sideY, sideZ, figureSelect} from "./constants.js";
+import { xMove, yMove, xRotate, yRotate, canvas, sideX, sideY, height, figureSelect} from "./constants.js";
 
 import { getInitialFigure, multiplyMatrices, getCenter, moveFigure, rotateFigure } from "./mathFunctions.js";
 
 export function draw() {
     // let length = sideX.value;
     let figureType = figureSelect.value;
-    let figure = getInitialFigure(sideX.value, sideY.value, sideZ.value, figureType);
+    let figure = getInitialFigure(sideX.value, sideY.value, height.value, figureType);
     
 
     function displayParallelepiped(displayedCube) {
